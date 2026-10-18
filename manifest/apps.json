@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-18",
+  "packages": [
+    {
+      "id": "Adobe.Acrobat.Pro"
+    },
+    {
+      "id": "Apple.AppleSoftwareUpdate"
+    },
+    {
+      "id": "Apple.Safari"
+    },
+    {
+      "id": "Autodesk.Fusion"
+    },
+    {
+      "id": "Balena.Etcher"
+    },
+    {
+      "id": "CodecGuide.K-LiteCodecPack.Full"
+    },
+    {
+      "id": "EaseUS.TodoPCTrans"
+    },
+    {
+      "id": "Easeware.DriverEasy"
+    },
+    {
+      "id": "Eassos.DiskGenius"
+    },
+    {
+      "id": "EpicGames.EpicGamesLauncher"
+    },
+    {
+      "id": "EPSON.EpsonConnectPrinterSetup"
+    },
+    {
+      "id": "EPSON.EpsonScan2"
+    },
+    {
+      "id": "EPSON.EventManager"
+    },
+    {
+      "id": "EPSON.PhotoPlus"
+    },
+    {
+      "id": "EPSON.Scan.OCRComponent"
+    },
+    {
+      "id": "EPSON.SoftwareUpdater"
+    },
+    {
+      "id": "Git.Git"
+    },
+    {
+      "id": "GitHub.CopilotApp"
+    },
+    {
+      "id": "GitHub.GitHubDesktop"
+    },
+    {
+      "id": "Google.GoogleDrive"
+    },
+    {
+      "id": "IObit.IObitUnlocker"
+    },
+    {
+      "id": "Microsoft.Outlook"
+    },
+    {
+      "id": "Microsoft.PowerShell"
+    },
+    {
+      "id": "Microsoft.Teams"
+    },
+    {
+      "id": "Microsoft.WindowsTerminal"
+    },
+    {
+      "id": "Mozilla.Firefox"
+    },
+    {
+      "id": "Mozilla.VPN"
+    },
+    {
+      "id": "Nlitesoft.NTLite"
+    },
+    {
+      "id": "PowerSoftware.AnyBurn.Pro"
+    },
+    {
+      "id": "RARLab.WinRAR"
+    },
+    {
+      "id": "RevoUninstaller.RevoUninstallerPro"
+    },
+    {
+      "id": "Valve.Steam"
+    },
+    {
+      "id": "voidtools.Everything"
+    }
+  ]
+}
