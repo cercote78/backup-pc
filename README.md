@@ -1,11 +1,31 @@
 # Backup PC
 
-Utility PowerShell per Windows per creare un catalogo dei programmi e dei giochi
-installati, reinstallare i pacchetti riconosciuti da winget e copiare in modo
-selettivo file personali di configurazione e salvataggio. Non copia programmi,
-giochi o installer nel backup dei dati personali.
+Backup PC è una piccola utility PowerShell per Windows che aiuta a preparare il
+passaggio a un nuovo computer: crea un catalogo dei programmi e dei giochi
+installati, esporta e reinstalla i pacchetti riconosciuti da winget e salva
+impostazioni o salvataggi personali selezionati. Non copia i programmi o i giochi
+installati e non sostituisce i launcher o le licenze originali.
 
-## Installazione
+## Scarica e installa
+
+[Scarica Backup PC in formato ZIP](https://github.com/cercote78/backup-pc/raw/refs/heads/cercote78-windows-software-inventory/BackupPC.zip),
+estrai l'archivio e apri PowerShell o il Prompt dei comandi nella cartella
+estratta. Le righe qui sotto scaricano lo ZIP nella cartella Download; dopo
+averlo estratto, esegui `Installa-BackupPC.ps1`.
+
+**PowerShell — scarica lo ZIP (una riga):**
+
+```powershell
+Invoke-WebRequest -Uri "https://github.com/cercote78/backup-pc/raw/refs/heads/cercote78-windows-software-inventory/BackupPC.zip" -OutFile "$env:USERPROFILE\Downloads\BackupPC.zip"
+```
+
+**Prompt dei comandi (CMD) — scarica lo ZIP (una riga):**
+
+```cmd
+curl.exe -L "https://github.com/cercote78/backup-pc/raw/refs/heads/cercote78-windows-software-inventory/BackupPC.zip" -o "%USERPROFILE%\Downloads\BackupPC.zip"
+```
+
+## Installazione dal repository estratto
 
 Apri PowerShell nella cartella del repository ed esegui:
 
