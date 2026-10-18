@@ -1,9 +1,13 @@
 [CmdletBinding()]
 param(
-    [string]$ManifestPath = (Join-Path $PSScriptRoot '..\manifest\apps.json')
+    [string]$ManifestPath
 )
 
 $ErrorActionPreference = 'Stop'
+if ([string]::IsNullOrWhiteSpace($ManifestPath)) {
+    $ManifestPath = Join-Path $PSScriptRoot '..\manifest\apps.json'
+}
+
 $winget = Get-Command winget -ErrorAction SilentlyContinue
 if (-not $winget) {
     throw 'winget non è disponibile. Installa o aggiorna App Installer e riprova.'
