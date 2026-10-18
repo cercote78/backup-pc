@@ -37,6 +37,10 @@ Su Windows con winget disponibile, esegui:
 
 Lo script mostra tutti i pacchetti e procede solo se digiti esattamente `INSTALL`. Ogni errore di winget interrompe l'operazione e viene riportato. Non modifica Defender, firewall o altre impostazioni di sicurezza.
 
+Il collegamento del menu Start avvia PowerShell con `-ExecutionPolicy Bypass`
+solo per quel processo, così una policy locale che blocca gli script non
+impedisce il ripristino. Non cambia la policy permanente del sistema.
+
 ## Limiti
 
 - I programmi non disponibili in winget richiedono installazione manuale.

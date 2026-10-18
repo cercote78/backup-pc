@@ -35,7 +35,7 @@ if (Test-Path -LiteralPath (Join-Path $sourceRoot 'README.md') -PathType Leaf) {
 
 $launcherContent = @'
 @echo off
-powershell.exe -NoProfile -File "%~dp0scripts\Restore-Backup.ps1"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0scripts\Restore-Backup.ps1"
 if errorlevel 1 pause
 '@
 Set-Content -LiteralPath $launcherPath -Value $launcherContent -Encoding ASCII
