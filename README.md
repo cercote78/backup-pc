@@ -1,45 +1,97 @@
 # Backup PC
 
-Inventario personale dei programmi riconosciuti da [winget](https://learn.microsoft.com/windows/package-manager/winget/) e script PowerShell per reinstallarli su Windows. Il repository e `manifest\apps.json` sono personali: mantieni privato il repository.
+Backup PC è una piccola utility PowerShell per Windows che aiuta a preparare il
+passaggio a un nuovo computer: crea un catalogo dei programmi e dei giochi
+installati, esporta e reinstalla i pacchetti riconosciuti da winget e salva
+impostazioni o salvataggi personali selezionati. Non copia i programmi o i giochi
+installati e non sostituisce i launcher o le licenze originali.
 
-## Installare Backup PC
+## Scarica e installa
 
-Per installare lo strumento nel profilo utente e aggiungere il collegamento
-“Backup PC” al menu Start, apri PowerShell nella cartella del repository ed
-esegui:
+La repository è privata: per scaricarla devi avere accesso a
+[cercote78/backup-pc](https://github.com/cercote78/backup-pc), Git e GitHub CLI
+(`gh`) installati, con l'accesso completato una volta tramite `gh auth login`.
+I comandi qui sotto clonano questa versione della utility in una cartella
+temporanea. Poi esegui `Installa-BackupPC.ps1` dalla cartella clonata.
+
+**PowerShell — clona la repository (una riga):**
 
 ```powershell
+gh repo clone cercote78/backup-pc "$env:TEMP\backup-pc" -- --branch cercote78-windows-software-inventory
+```
+
+**Prompt dei comandi (CMD) — clona la repository (una riga):**
+
+```cmd
+gh repo clone cercote78/backup-pc "%TEMP%\backup-pc" -- --branch cercote78-windows-software-inventory
+```
+
+## Installazione dal repository estratto
+
+Dopo il clone, apri PowerShell nella cartella temporanea ed esegui:
+
+```powershell
+Set-Location "$env:TEMP\backup-pc"
 .\Installa-BackupPC.ps1
 ```
 
-Non servono privilegi amministrativi. Questo installa solo gli script e il
-manifest di Backup PC, non i programmi elencati. Per rimuovere lo strumento,
-elimina la cartella `%LOCALAPPDATA%\Programs\BackupPC` e il collegamento
-“Backup PC” dal menu Start.
+Non servono privilegi amministrativi. L'installazione copia lo strumento in
+`%LOCALAPPDATA%\Programs\BackupPC` e crea il collegamento “Backup PC” nel menu
+Start. Per rimuoverlo, elimina quella cartella e il collegamento.
 
-## Inventario
+## Catalogo
 
-Lo script `scripts\Export-BackupManifest.ps1` crea o aggiorna il manifest sul PC:
+Dal menu di Backup PC scegli l'opzione 1. Il catalogo include i programmi
+registrati da Windows, le app Microsoft Store dell'utente corrente e i giochi
+Steam ed Epic Games trovati nei rispettivi manifest. I giochi di altri launcher
+possono apparire se registrati da Windows; il catalogo non è garantito completo.
 
-```powershell
-.\scripts\Export-BackupManifest.ps1
-```
+Vengono creati file JSON e CSV in `Documenti\Backup PC\Inventario`. Per ogni
+elemento sono riportati nome, versione, editore, posizione di installazione,
+tipo e origine del rilevamento. Il catalogo non contiene i file installati,
+licenze o credenziali.
 
-Il manifest incluso è stato generato con `winget export` dal PC corrente e contiene solo identificativi winget, non installer. Lo script filtra componenti Windows, runtime condivisi, servizi di supporto ai driver e programmi di stampa specifici del dispositivo; non include i programmi “Disable Windows Defender” o “Disable Windows Defender 2.0”. Rivedi il manifest prima di ogni ripristino. L'esportazione winget non è un elenco completo di tutte le applicazioni: quelle non riconosciute o non disponibili in winget non vengono installate automaticamente.
+## Reinstallare i programmi
 
-## Ripristino
+Sul PC originale, scegli l'opzione 3. Winget crea un manifest JSON in
+`Documenti\Backup PC\Ripristino`; copia quel file su un supporto o in una
+posizione accessibile dal nuovo PC. Sul nuovo PC installa Backup PC e scegli
+l'opzione 4, indicando il manifest. La utility mostra i pacchetti che verranno
+installati e procede solo dopo la conferma esatta `INSTALL`. Le versioni
+disponibili correnti vengono usate al posto delle versioni originarie.
 
-Su Windows con winget disponibile, esegui:
+La reinstallazione funziona solo per i pacchetti che winget riconosce e trova
+nei cataloghi configurati. Esamina l'output di winget per avvisi o pacchetti
+non installati; la utility interrompe l'operazione se winget restituisce un
+errore. Giochi Steam/Epic, software non catalogato, acquisti, account, licenze
+e attivazioni possono richiedere il launcher originale e un intervento manuale.
+Questo manifest è separato dall'inventario CSV/JSON e va copiato
+separatamente sul PC nuovo.
 
-```powershell
-.\scripts\Restore-Backup.ps1
-```
+## Backup dei dati personali
 
-Lo script mostra tutti i pacchetti e procede solo se digiti esattamente `INSTALL`. Ogni errore di winget interrompe l'operazione e viene riportato. Non modifica Defender, firewall o altre impostazioni di sicurezza.
+Scegli l'opzione 2 e inserisci il percorso di una cartella specifica con
+impostazioni o salvataggi, quindi il percorso di destinazione. Prima della
+copia, lo strumento mostra i file riconosciuti (configurazioni e salvataggi),
+il numero e la dimensione totale. La copia parte solo dopo aver digitato
+esattamente `BACKUP`.
 
-## Limiti
+Sono inclusi solo file con estensioni comuni di configurazione e salvataggio:
+`.cfg`, `.conf`, `.dat`, `.db`, `.dsv`, `.ini`, `.json`, `.log`, `.plist`,
+`.sav`, `.save`, `.srm`, `.sqlite`, `.sqlite3`, `.toml`, `.txt`, `.xml`,
+`.yaml` e `.yml`. Le estensioni eseguibili note, i file con intestazione
+eseguibile Windows e le altre estensioni non vengono copiati.
+Collegamenti simbolici e cartelle reparse point vengono saltati; errori di
+lettura o copia interrompono l'operazione.
 
-- I programmi non disponibili in winget richiedono installazione manuale.
-- Programmi a pagamento, licenze, chiavi prodotto, account e attivazioni non vengono copiati o ripristinati. In particolare, le installazioni Microsoft Office, Project e Visio presenti sul PC richiedono i rispettivi canali e licenze.
-- Driver, runtime condivisi, componenti di Windows, dati personali e impostazioni non fanno parte del ripristino.
-- Le versioni disponibili in winget possono essere diverse o più recenti di quelle installate originariamente.
+Non vengono scelti automaticamente cartelle personali né profili applicativi:
+seleziona una sottocartella mirata che contenga solo i dati che vuoi conservare.
+Sono rifiutate le cartelle radice del profilo e le posizioni di sistema o dei
+programmi, nonché le cartelle di installazione rilevate e quelle che le
+contengono. Esamina comunque attentamente l'anteprima prima di confermare.
+Ogni backup è creato in una nuova cartella `BackupPC-<data-ora>` nella
+destinazione scelta e contiene un manifest dei file copiati.
+
+I dati in cartelle esterne alla sorgente scelta non vengono inclusi
+automaticamente. Il backup non salva account, licenze, chiavi prodotto o
+impostazioni di sistema.
