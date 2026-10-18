@@ -32,6 +32,9 @@ Copy-Item -LiteralPath $manifestPath -Destination $installManifestPath -Force
 if (Test-Path -LiteralPath (Join-Path $sourceRoot 'README.md') -PathType Leaf) {
     Copy-Item -LiteralPath (Join-Path $sourceRoot 'README.md') -Destination $resolvedInstallPath -Force
 }
+if (Test-Path -LiteralPath (Join-Path $sourceRoot 'INSTALLAZIONI-MANUALI.md') -PathType Leaf) {
+    Copy-Item -LiteralPath (Join-Path $sourceRoot 'INSTALLAZIONI-MANUALI.md') -Destination $resolvedInstallPath -Force
+}
 
 $launcherContent = @'
 @echo off

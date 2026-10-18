@@ -44,6 +44,7 @@ impedisce il ripristino. Non cambia la policy permanente del sistema.
 ## Limiti
 
 - I programmi non disponibili in winget richiedono installazione manuale.
+- Per questi programmi è disponibile la [lista di link per l'installazione manuale](INSTALLAZIONI-MANUALI.md), con collegamenti ai siti dei produttori o alle ricerche ufficiali Microsoft Store.
 - Programmi a pagamento, licenze, chiavi prodotto, account e attivazioni non vengono copiati o ripristinati. In particolare, le installazioni Microsoft Office, Project e Visio presenti sul PC richiedono i rispettivi canali e licenze.
 - Driver, runtime condivisi, componenti di Windows, dati personali e impostazioni non fanno parte del ripristino.
 - Le versioni disponibili in winget possono essere diverse o più recenti di quelle installate originariamente.
