@@ -1,50 +1,71 @@
 # Backup PC
 
-Inventario personale dei programmi riconosciuti da [winget](https://learn.microsoft.com/windows/package-manager/winget/) e script PowerShell per reinstallarli su Windows. Il repository e `manifest\apps.json` sono personali: mantieni privato il repository.
+Backup PC salva su un disco esterno le cartelle personali comuni e un
+inventario dei programmi installati. In seguito può ricopiare i file mancanti
+e reinstallare, con winget, i programmi disponibili nel suo catalogo.
 
-## Installare Backup PC
+## Installazione
 
-Per installare lo strumento nel profilo utente e aggiungere il collegamento
-“Backup PC” al menu Start, apri PowerShell nella cartella del repository ed
-esegui:
+Installa il programma una volta con `Installa-BackupPC.ps1`. Nel menu Start
+trovi due collegamenti: **Backup PC - Crea backup** e **Backup PC** (ripristino).
 
-```powershell
-.\Installa-BackupPC.ps1
-```
+## Due comandi PowerShell
 
-Non servono privilegi amministrativi. Questo installa solo gli script e il
-manifest di Backup PC, non i programmi elencati. Per rimuovere lo strumento,
-elimina la cartella `%LOCALAPPDATA%\Programs\BackupPC` e il collegamento
-“Backup PC” dal menu Start.
+Collega il disco USB come unità `E:`. Le stringhe seguenti usano
+`E:\BackupPC`; per un altro percorso aggiungi il parametro
+`-DestinationRoot "F:\BackupPC"`.
 
-## Inventario
-
-Lo script `scripts\Export-BackupManifest.ps1` crea o aggiorna il manifest sul PC:
+**Creare un backup:**
 
 ```powershell
-.\scripts\Export-BackupManifest.ps1
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$env:LOCALAPPDATA\Programs\BackupPC\scripts\Backup-PC.ps1"
 ```
 
-Il manifest incluso è stato generato con `winget export` dal PC corrente e contiene solo identificativi winget, non installer. Lo script filtra componenti Windows, runtime condivisi, servizi di supporto ai driver e programmi di stampa specifici del dispositivo; non include i programmi “Disable Windows Defender” o “Disable Windows Defender 2.0”. Rivedi il manifest prima di ogni ripristino. L'esportazione winget non è un elenco completo di tutte le applicazioni: quelle non riconosciute o non disponibili in winget non vengono installate automaticamente.
-
-## Ripristino
-
-Su Windows con winget disponibile, esegui:
+**Ripristinare il backup più recente:**
 
 ```powershell
-.\scripts\Restore-Backup.ps1
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$env:LOCALAPPDATA\Programs\BackupPC\scripts\Restore-PC.ps1"
 ```
 
-Lo script mostra tutti i pacchetti e procede solo se digiti esattamente `INSTALL`. Ogni errore di winget interrompe l'operazione e viene riportato. Non modifica Defender, firewall o altre impostazioni di sicurezza.
+Il ripristino mostra il backup e i programmi trovati e continua solo se digiti
+`RIPRISTINA`. Copia i file mancanti senza sovrascrivere o cancellare quelli già
+presenti. I programmi vengono installati solo dopo la conferma. Per selezionare
+un backup diverso, passa il suo percorso come argomento:
 
-Il collegamento del menu Start avvia PowerShell con `-ExecutionPolicy Bypass`
-solo per quel processo, così una policy locale che blocca gli script non
-impedisce il ripristino. Non cambia la policy permanente del sistema.
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$env:LOCALAPPDATA\Programs\BackupPC\scripts\Restore-PC.ps1" -BackupPath "E:\BackupPC\2026-10-18_140000"
+```
 
-## Limiti
+## Cosa viene salvato
 
-- I programmi non disponibili in winget richiedono installazione manuale.
-- Per questi programmi è disponibile la [lista di link per l'installazione manuale](INSTALLAZIONI-MANUALI.md), con collegamenti ai siti dei produttori o alle ricerche ufficiali Microsoft Store.
-- Programmi a pagamento, licenze, chiavi prodotto, account e attivazioni non vengono copiati o ripristinati. In particolare, le installazioni Microsoft Office, Project e Visio presenti sul PC richiedono i rispettivi canali e licenze.
-- Driver, runtime condivisi, componenti di Windows, dati personali e impostazioni non fanno parte del ripristino.
-- Le versioni disponibili in winget possono essere diverse o più recenti di quelle installate originariamente.
+- Desktop, Documenti, Download, Immagini, Musica, Video e la cartella Windows
+  “Saved Games”, se esistono. Dentro Documenti sono inclusi anche eventuali
+  salvataggi di gioco che i giochi conservano lì.
+- Un inventario dei programmi desktop e delle app Microsoft Store.
+- Gli identificativi dei programmi che `winget` riesce a riconoscere e
+  reinstallare da `winget`.
+
+Ogni backup è una nuova cartella datata (`E:\BackupPC\AAAA-MM-GG_HHMMSS`): non
+elimina i backup precedenti. Durante la copia i file non accessibili o gli
+errori di spazio vengono segnalati.
+
+## Cosa non può garantire
+
+Un backup di file e inventario **non è un’immagine completa del PC**. Non
+salva Windows, il contenuto delle cartelle Program Files, i giochi installati
+e le relative librerie, i profili completi di AppData, le impostazioni di ogni
+programma, né tutti i salvataggi di gioco. I launcher come Steam, Epic e Xbox
+possono dover riscaricare i giochi; verifica che i salvataggi siano sincronizzati
+nel cloud o presenti nelle cartelle salvate. Per proteggere i salvataggi in
+AppData occorre aggiungere consapevolmente le cartelle specifiche del gioco.
+
+Un'app non riconosciuta da winget resta nell'inventario, ma richiede
+reinstallazione manuale dal produttore. Non vengono salvati installer,
+password, chiavi prodotto, licenze, account o attivazioni. Alcuni programmi
+a pagamento potrebbero richiedere nuovamente la licenza. Per link ai produttori
+e alle ricerche Microsoft Store, consulta
+[Installazioni manuali](INSTALLAZIONI-MANUALI.md).
+
+Il ripristino **non promette di non perdere nulla** e non sostituisce una copia
+completa o un'immagine di sistema. Controlla periodicamente che il disco USB
+sia leggibile e che i file di backup si aprano.
