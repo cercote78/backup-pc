@@ -8,28 +8,30 @@ installati e non sostituisce i launcher o le licenze originali.
 
 ## Scarica e installa
 
-[Scarica Backup PC in formato ZIP](https://github.com/cercote78/backup-pc/raw/refs/heads/cercote78-windows-software-inventory/BackupPC.zip),
-estrai l'archivio e apri PowerShell o il Prompt dei comandi nella cartella
-estratta. Le righe qui sotto scaricano lo ZIP nella cartella Download; dopo
-averlo estratto, esegui `Installa-BackupPC.ps1`.
+La repository è privata: per scaricarla devi avere accesso a
+[cercote78/backup-pc](https://github.com/cercote78/backup-pc), Git e GitHub CLI
+(`gh`) installati, con l'accesso completato una volta tramite `gh auth login`.
+I comandi qui sotto clonano questa versione della utility in una cartella
+temporanea. Poi esegui `Installa-BackupPC.ps1` dalla cartella clonata.
 
-**PowerShell — scarica lo ZIP (una riga):**
+**PowerShell — clona la repository (una riga):**
 
 ```powershell
-Invoke-WebRequest -Uri "https://github.com/cercote78/backup-pc/raw/refs/heads/cercote78-windows-software-inventory/BackupPC.zip" -OutFile "$env:USERPROFILE\Downloads\BackupPC.zip"
+gh repo clone cercote78/backup-pc "$env:TEMP\backup-pc" -- --branch cercote78-windows-software-inventory
 ```
 
-**Prompt dei comandi (CMD) — scarica lo ZIP (una riga):**
+**Prompt dei comandi (CMD) — clona la repository (una riga):**
 
 ```cmd
-curl.exe -L "https://github.com/cercote78/backup-pc/raw/refs/heads/cercote78-windows-software-inventory/BackupPC.zip" -o "%USERPROFILE%\Downloads\BackupPC.zip"
+gh repo clone cercote78/backup-pc "%TEMP%\backup-pc" -- --branch cercote78-windows-software-inventory
 ```
 
 ## Installazione dal repository estratto
 
-Apri PowerShell nella cartella del repository ed esegui:
+Dopo il clone, apri PowerShell nella cartella temporanea ed esegui:
 
 ```powershell
+Set-Location "$env:TEMP\backup-pc"
 .\Installa-BackupPC.ps1
 ```
 
